@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe "users/show.html.haml" do
+describe "common/_user_profile.html.haml" do
   let(:user) { build_stubbed :user }
 
   before do
     view.stub admin?: false
-    assign :user, user
+    view.stub user: user
   end
 
   context 'when a visitor is viewing a user profile' do

@@ -5,8 +5,8 @@
   пишете на #{mail_to @course_email}.
 
 %ul.users
-  - @admins.each do |admin|
+  - @teachers.each do |teacher|
     %li
-      = link_to admin do
-        = user_thumbnail admin
-        = admin.name
+      = link_to teacher do
+        = user_thumbnail teacher
+        = teacher.name

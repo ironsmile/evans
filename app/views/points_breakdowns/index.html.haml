@@ -18,7 +18,7 @@
   %tbody
     - @points_breakdowns.each do |breakdown|
       %tr
-        %td= link_to breakdown.name, user_path(breakdown.id)
+        %td= link_to breakdown.name, student_path(breakdown.id)
         %td= breakdown.faculty_number
         %td= breakdown.stars
         %td= breakdown.vouchers

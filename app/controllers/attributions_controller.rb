@@ -2,12 +2,12 @@ class AttributionsController < ApplicationController
   before_filter :require_admin
 
   def new
-    @user = User.find params[:user_id]
+    @user = User.find params[:student_id]
     @attribution = Attribution.new
   end
 
   def create
-    @user = User.find params[:user_id]
+    @user = User.find params[:student_id]
     @attribution = Attribution.new params[:attribution]
     @attribution.user = @user
 

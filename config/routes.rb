@@ -48,10 +48,10 @@ Trane::Application.routes.draw do
   resources :tips, except: :destroy
 
   devise_for :users
-  resources :users, only: %w(index show) do
+  resources :students, only: %w(index show) do
     resources :attributions, only: %w(new create edit update)
   end
-  resource :team, only: :show
+  resources :teachers, only: %w(index show)
   resources :sign_ups, only: %w(index create)
   resources :activities, only: :index
   resources :points_breakdowns, only: :index
