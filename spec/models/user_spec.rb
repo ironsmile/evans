@@ -19,6 +19,20 @@ describe User do
     build(:user, name: 'Петър Петров Иванов').first_name.should eq 'Петър'
   end
 
+  it "can retrieve the list of students" do
+    student = create :user
+    create :admin
+
+    User.students.should eq [student]
+  end
+
+  it "can retrieve the list of admins" do
+    admin = create :admin
+    create :user
+
+    User.admins.should eq [admin]
+  end
+
   it "has 0 points if admin" do
     create(:admin).points.should eq 0
   end
