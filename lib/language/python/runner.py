@@ -6,6 +6,7 @@ import sys
 import multiprocessing
 import unittest
 import traceback
+import queue
 
 
 class StdBuffer:
@@ -37,28 +38,34 @@ def timeout(func):
     timeout_duration = 2
 
     def thread(*args, **kwargs):
-        class InterruptableProcess(multiprocessing.Process):
-            def __init__(self):
-                super().__init__()
-                self.result = None
-                self.exc_info = None
+        def test_worker(queue):
+            try:
+                queue.put({'result': func(*args, **kwargs), 'exc_info': None})
+            except Exception:
+                queue.put({'exc_info': sys.exc_info(), 'result': None})
 
-            def run(self):
-                try:
-                    self.result = func(*args, **kwargs)
-                except:
-                    self.exc_info = sys.exc_info()
-
-        test_process = InterruptableProcess()
+        test_result_queue = multiprocessing.Queue()
+        test_process = multiprocessing.Process(
+            target=test_worker,
+            args=(test_result_queue,)
+        )
         test_process.start()
         test_process.join(timeout_duration)
         if test_process.is_alive():
             test_process.terminate()
             raise TimeoutError
         else:
-            if test_process.exc_info:
-                raise test_process.exc_info[1]
-            return test_process.result
+            try:
+                test_result = test_result_queue.get(timeout=2)
+            except queue.Empty:
+                # Failing tests end up not writing anything in the queue
+                print('Why the queue ends up empty is a mystery')
+                raise
+            test_process.terminate()
+            if test_result['exc_info']:
+                raise test_result['exc_info'][1]
+            return test_result['result']
+
     return thread
 
 
