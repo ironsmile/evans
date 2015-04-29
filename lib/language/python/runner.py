@@ -50,21 +50,19 @@ def timeout(func):
             args=(test_result_queue,)
         )
         test_process.start()
-        test_process.join(timeout_duration)
-        if test_process.is_alive():
+
+        try:
+            test_result = test_result_queue.get(timeout=timeout_duration)
+        except queue.Empty:
             test_process.terminate()
-            raise TimeoutError
         else:
-            try:
-                test_result = test_result_queue.get(timeout=2)
-            except queue.Empty:
-                # Failing tests end up not writing anything in the queue
-                print('Why the queue ends up empty is a mystery')
-                raise
-            test_process.terminate()
             if test_result['exc_info']:
                 raise test_result['exc_info'][1]
             return test_result['result']
+        finally:
+            test_process.join()
+
+        raise TimeoutError
 
     return thread
 
