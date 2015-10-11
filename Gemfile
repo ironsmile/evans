@@ -2,10 +2,6 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.0.0'
 gem 'pg'
-
-# Keep this until we upgrade to the latest Ruby version.
-gem 'json', '1.8.0'
-
 gem 'devise'
 gem 'devise-encryptable'
 gem 'simple_form'
@@ -15,7 +11,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'draper'
 
-gem 'protected_attributes'
+gem 'protected_attributes', '~> 1.0.0'
 gem 'rails-observers'
 
 gem 'skeptic'
@@ -24,7 +20,7 @@ gem 'spork-rails'
 
 gem 'rails_autolink', '>= 1.1.5'
 gem 'rdiscount'
-gem 'sanitize'
+gem 'sanitize', '~> 2.0'
 gem 'coderay'
 
 gem 'jquery-rails'
@@ -40,7 +36,8 @@ group :production do
 end
 
 group :assets do
-  gem 'sass-rails'
+  gem 'sass-rails', '~> 4.0'
+  gem 'sass', '~> 3.2.0'
   gem 'coffee-rails'
   gem 'uglifier'
   gem 'therubyracer'
@@ -48,7 +45,7 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.14'
   gem 'factory_girl_rails'
   gem 'faker'
 end
@@ -63,7 +60,7 @@ group :development do
 end
 
 group :test do
-  gem 'cucumber', '1.2.5'
+  gem 'cucumber', '~> 1.2'
   gem 'cucumber-rails', require: false
   gem 'launchy'
   gem 'shoulda-matchers'
@@ -74,6 +71,9 @@ group :test do
   gem 'email_spec'
   gem 'simplecov'
   gem 'coveralls', require: false
+  gem 'test-unit'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-collection_matchers'
 end
 
 group :tasks do
